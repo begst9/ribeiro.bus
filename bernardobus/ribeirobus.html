@@ -1,0 +1,1039 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>RIBEIRObus</title>
+
+<style>
+/* =========================================================================
+   RIBEIRObus — folha de estilos interna
+   Fundo roxo, fonte estilo "letra à mão", botões em balão assimétrico,
+   títulos em contorno preto, caixas cinza-claro — igual ao mockup.
+   ========================================================================= */
+
+@import url('https://fonts.googleapis.com/css2?family=Patrick+Hand&family=Patrick+Hand+SC&display=swap');
+
+:root{
+  --roxo:        #6a27dc;
+  --roxo-escuro: #5a1fc4;
+  --branco:      #f5f4fb;
+  --cinza:       #e3e1ef;
+  --cinza-escuro:#cfccdf;
+  --preto:       #141414;
+  --laranja:     #f5a623;
+  --verde:       #22b573;
+  --marrom:      #7a4a2e;
+  --vermelho:    #e6423a;
+  --sombra:      rgba(0,0,0,0.28);
+  --font-title:  'Patrick Hand SC', 'Patrick Hand', cursive;
+  --font-body:   'Patrick Hand', cursive;
+}
+
+*, *::before, *::after{ box-sizing: border-box; }
+html, body{ margin: 0; padding: 0; }
+
+body{
+  min-height: 100vh;
+  background: var(--roxo);
+  background-image:
+    radial-gradient(circle at 15% 10%, rgba(255,255,255,0.05), transparent 40%),
+    radial-gradient(circle at 90% 85%, rgba(0,0,0,0.08), transparent 45%);
+  color: var(--preto);
+  font-family: var(--font-body);
+  font-size: 18px;
+  overflow-x: hidden;
+}
+
+a{ text-decoration: none; color: inherit; }
+button{ font-family: var(--font-body); }
+ul{ margin: 0; padding: 0; list-style: none; }
+
+/* Cada "página" é uma section escondida por padrão */
+.page{
+  display: none;
+  min-height: 100vh;
+  padding-bottom: 70px;
+  animation: fadeIn 0.25s ease;
+}
+
+.page.active{ display: block; }
+
+@keyframes fadeIn{
+  from{ opacity: 0; transform: translateY(6px); }
+  to{ opacity: 1; transform: translateY(0); }
+}
+
+/* ---------------------------------------------------------------------
+   BARRA SUPERIOR
+--------------------------------------------------------------------- */
+.topbar{
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  padding: 26px 34px 0 34px;
+  position: relative;
+  z-index: 5;
+}
+
+/* ---------------------------------------------------------------------
+   BOTÕES
+--------------------------------------------------------------------- */
+.btn{
+  display: inline-block;
+  background: var(--branco);
+  color: var(--preto);
+  border: 3px solid var(--preto);
+  border-radius: 46px 46px 46px 10px;
+  padding: 14px 26px;
+  font-family: var(--font-title);
+  font-size: 1.15rem;
+  cursor: pointer;
+  text-align: center;
+  line-height: 1.15;
+  box-shadow: 4px 5px 0 var(--sombra);
+  transition: transform 0.12s ease, box-shadow 0.12s ease;
+  white-space: nowrap;
+}
+
+.btn:hover{
+  transform: translate(-1px, -3px);
+  box-shadow: 5px 8px 0 var(--sombra);
+}
+
+.btn:active{
+  transform: translate(1px, 1px);
+  box-shadow: 2px 2px 0 var(--sombra);
+}
+
+.btn-wrap-text{ white-space: normal; max-width: 220px; }
+
+.btn-static{ cursor: default; }
+.btn-static:hover{ transform: none; box-shadow: 4px 5px 0 var(--sombra); }
+
+.btn-small{
+  padding: 10px 20px;
+  font-size: 1rem;
+  border-radius: 34px 34px 34px 8px;
+}
+
+/* ---------------------------------------------------------------------
+   TÍTULOS
+--------------------------------------------------------------------- */
+.title-outline{
+  color: transparent;
+  -webkit-text-stroke: 3px var(--preto);
+  paint-order: stroke fill;
+  font-family: var(--font-title);
+  font-size: clamp(2.6rem, 7vw, 5rem);
+  text-align: center;
+  margin: 6px 0 0 0;
+  letter-spacing: 4px;
+}
+
+.title-underline{
+  font-family: var(--font-title);
+  text-align: center;
+  font-size: clamp(2rem, 5vw, 3rem);
+  text-decoration: underline;
+  text-decoration-thickness: 3px;
+  text-underline-offset: 8px;
+  margin: 30px 0 10px 0;
+  letter-spacing: 1px;
+}
+
+.tagline{
+  text-align: center;
+  font-family: var(--font-title);
+  font-size: clamp(1.1rem, 2.6vw, 1.6rem);
+  max-width: 950px;
+  margin: 8px auto 26px auto;
+  padding: 0 24px;
+  line-height: 1.35;
+}
+
+/* ---------------------------------------------------------------------
+   LANDING PAGE
+--------------------------------------------------------------------- */
+.hero-img-wrap{ display: flex; justify-content: center; margin: 22px 0 30px 0; }
+
+.hero-img-frame{
+  width: 460px;
+  max-width: 88%;
+  border-radius: 22px;
+  overflow: hidden;
+  box-shadow: 6px 10px 0 var(--sombra);
+  border: 4px solid var(--preto);
+}
+
+.hero-img-frame img{
+  width: 100%;
+  display: block;
+  aspect-ratio: 4 / 3;
+  object-fit: cover;
+}
+
+.center-col{ display: flex; flex-direction: column; align-items: center; }
+
+.footer-social{
+  position: fixed;
+  bottom: 22px;
+  left: 34px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  font-family: var(--font-title);
+  font-size: 1.1rem;
+  z-index: 5;
+}
+
+.footer-social a{ display: flex; align-items: center; gap: 10px; }
+
+.icon-circle{
+  width: 32px;
+  height: 32px;
+  border: 2.5px solid var(--preto);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1rem;
+}
+
+/* ---------------------------------------------------------------------
+   HOME — banner com texto sobreposto
+--------------------------------------------------------------------- */
+.bus-hero{
+  position: relative;
+  width: 84%;
+  max-width: 950px;
+  margin: 60px auto 46px auto;
+  border-radius: 18px;
+  overflow: hidden;
+  border: 4px solid var(--preto);
+  box-shadow: 6px 10px 0 var(--sombra);
+  aspect-ratio: 16 / 8;
+}
+
+.bus-hero img{
+  width: 100%; height: 100%;
+  object-fit: cover; display: block;
+  filter: brightness(0.92);
+}
+
+.bus-hero .overlay-top-left{
+  position: absolute; top: 20px; left: 24px;
+  color: #fff; font-family: var(--font-title);
+  text-shadow: 2px 2px 0 rgba(0,0,0,0.55);
+}
+
+.bus-hero .overlay-top-left .brand{ font-size: clamp(1.6rem, 4vw, 2.4rem); line-height: 1; }
+.bus-hero .overlay-top-left .brand span{ color: var(--laranja); }
+.bus-hero .overlay-top-left .slogan{ font-size: clamp(1rem, 2.4vw, 1.3rem); color: var(--laranja); margin-top: 4px; }
+.bus-hero .overlay-top-left .sub{ font-size: 0.85rem; color: #fff; margin-top: 2px; }
+
+.bus-hero .overlay-top-right{
+  position: absolute; top: 20px; right: 24px; text-align: right;
+  color: #fff; font-family: var(--font-title);
+  text-shadow: 2px 2px 0 rgba(0,0,0,0.55);
+}
+
+.bus-hero .overlay-top-right .brand-small{ font-size: clamp(1rem, 2.4vw, 1.4rem); }
+.bus-hero .overlay-top-right .brand-small span{ color: var(--laranja); }
+.bus-hero .overlay-top-right .destino-tag{ margin-top: 4px; font-size: clamp(1.1rem, 3vw, 1.8rem); color: var(--laranja); }
+
+.bus-hero .overlay-bottom{
+  position: absolute; bottom: 16px; left: 24px;
+  color: #fff; font-family: var(--font-title);
+  font-size: clamp(0.95rem, 2vw, 1.2rem);
+  text-shadow: 2px 2px 0 rgba(0,0,0,0.55);
+}
+
+.home-buttons{ display: flex; justify-content: center; gap: 26px; flex-wrap: wrap; padding: 0 30px; }
+.home-buttons .btn{ min-width: 190px; }
+
+/* ---------------------------------------------------------------------
+   LOGIN / CADASTRO
+--------------------------------------------------------------------- */
+.form-wrap{ max-width: 640px; margin: 70px auto 40px auto; padding: 0 26px; }
+.form-row{ margin-bottom: 30px; }
+
+.form-row label{
+  display: block;
+  font-family: var(--font-title);
+  font-size: clamp(1.5rem, 4vw, 2.1rem);
+  margin-bottom: 8px;
+}
+
+.form-row input, .form-row select{
+  width: 100%;
+  padding: 12px 20px;
+  border-radius: 40px;
+  border: 3px solid var(--preto);
+  font-family: var(--font-body);
+  font-size: 1.05rem;
+  background: var(--branco);
+  color: var(--preto);
+}
+
+.form-row input::placeholder{ color: #7c7c7c; font-family: var(--font-body); }
+
+.form-submit{ display: flex; justify-content: center; margin-top: 44px; }
+
+.success-box{
+  max-width: 600px;
+  margin: 110px auto;
+  text-align: center;
+  background: var(--branco);
+  border: 4px solid var(--preto);
+  border-radius: 30px 30px 30px 8px;
+  padding: 50px 34px;
+  box-shadow: 6px 8px 0 var(--sombra);
+}
+
+.success-box h2{ font-family: var(--font-title); font-size: 2.2rem; margin-top: 0; }
+
+/* ---------------------------------------------------------------------
+   NOSSA HISTÓRIA
+--------------------------------------------------------------------- */
+.history-text{
+  max-width: 720px;
+  margin: 20px auto 60px auto;
+  text-align: center;
+  font-family: var(--font-title);
+  font-size: clamp(1.3rem, 3vw, 1.7rem);
+  line-height: 1.55;
+  padding: 0 26px;
+}
+
+/* ---------------------------------------------------------------------
+   DESTINOS
+--------------------------------------------------------------------- */
+.destinos-grid{
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 44px 50px;
+  max-width: 1150px;
+  margin: 50px auto 70px auto;
+  padding: 0 40px;
+}
+
+@media (max-width: 820px){ .destinos-grid{ grid-template-columns: 1fr; } }
+
+.destino-card{
+  background: var(--cinza);
+  border: 3px solid var(--preto);
+  border-radius: 60px 60px 60px 14px;
+  padding: 24px 20px;
+  text-align: center;
+  cursor: pointer;
+  box-shadow: 4px 6px 0 var(--sombra);
+  transition: transform 0.12s ease, box-shadow 0.12s ease;
+  display: block;
+}
+
+.destino-card:hover{ transform: translate(-1px, -3px); box-shadow: 5px 9px 0 var(--sombra); }
+.destino-card .nome{ font-family: var(--font-title); font-size: 1.25rem; }
+.destino-card .clique{ font-family: var(--font-body); font-size: 0.85rem; margin-top: 4px; letter-spacing: 0.5px; }
+
+/* ---------------------------------------------------------------------
+   RESERVA / DETALHES DA VIAGEM
+--------------------------------------------------------------------- */
+.reserva-wrap{
+  display: flex;
+  gap: 34px;
+  max-width: 1080px;
+  margin: 40px auto 10px auto;
+  padding: 0 34px;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: flex-start;
+}
+
+.reserva-photo{
+  width: 430px;
+  max-width: 100%;
+  aspect-ratio: 1 / 1;
+  border-radius: 22px;
+  overflow: hidden;
+  background: var(--branco);
+  border: 4px solid var(--preto);
+  box-shadow: 5px 8px 0 var(--sombra);
+}
+
+.reserva-photo img{ width: 100%; height: 100%; object-fit: cover; display: block; }
+
+.reserva-form{
+  background: var(--cinza);
+  border: 3px solid var(--preto);
+  border-radius: 30px 30px 30px 10px;
+  padding: 28px 32px;
+  width: 430px;
+  max-width: 100%;
+  box-shadow: 5px 8px 0 var(--sombra);
+}
+
+.reserva-form .form-row{ margin-bottom: 16px; text-align: center; }
+.reserva-form label{ font-family: var(--font-title); font-size: 1.05rem; margin-bottom: 4px; display: block; }
+
+.reserva-form input, .reserva-form select{
+  border-radius: 30px;
+  border: 2px solid var(--preto);
+  padding: 8px 16px;
+  font-size: 0.95rem;
+  text-align: center;
+}
+
+.extras-list{
+  text-align: left;
+  background: var(--branco);
+  border-radius: 18px;
+  border: 2px solid var(--preto);
+  padding: 12px 16px;
+}
+
+.extras-list label{
+  display: flex; align-items: center; gap: 8px;
+  font-family: var(--font-body); font-size: 0.95rem; margin-bottom: 6px;
+}
+
+.total-line{
+  font-family: var(--font-title);
+  font-size: 1.6rem;
+  text-align: center;
+  margin-top: 14px;
+  border-top: 2px dashed var(--preto);
+  padding-top: 12px;
+}
+
+.pagamento-box{
+  background: var(--cinza);
+  border: 3px solid var(--preto);
+  border-radius: 30px 30px 30px 10px;
+  padding: 20px 34px;
+  max-width: 880px;
+  margin: 26px auto;
+  text-align: center;
+  box-shadow: 5px 8px 0 var(--sombra);
+}
+
+.pagamento-box .label-title{ font-family: var(--font-title); font-size: 1.2rem; }
+
+.reserve-btn-wrap{ display: flex; justify-content: center; margin: 30px 0 60px 0; }
+
+/* ---------------------------------------------------------------------
+   DASHBOARD
+--------------------------------------------------------------------- */
+.dash-grid{
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 34px;
+  max-width: 1250px;
+  margin: 46px auto 60px auto;
+  padding: 0 34px;
+  align-items: start;
+}
+
+@media (max-width: 920px){ .dash-grid{ grid-template-columns: 1fr; } }
+
+.dash-card{
+  background: var(--cinza);
+  border: 3px solid var(--preto);
+  border-radius: 30px 30px 30px 10px;
+  padding: 26px;
+  text-align: center;
+  box-shadow: 5px 8px 0 var(--sombra);
+}
+
+.dash-card h3{ font-family: var(--font-title); font-size: 1.25rem; margin-top: 0; margin-bottom: 18px; }
+
+.review{
+  text-align: left;
+  background: var(--branco);
+  border: 2px solid var(--preto);
+  border-radius: 16px;
+  padding: 12px 16px;
+  margin-bottom: 14px;
+  font-family: var(--font-body);
+  font-size: 0.92rem;
+}
+
+.review .stars{ color: var(--laranja); font-size: 1.05rem; letter-spacing: 2px; }
+.review strong{ font-family: var(--font-title); }
+
+.donut{
+  width: 190px; height: 190px;
+  border-radius: 50%;
+  margin: 6px auto 16px auto;
+  background: conic-gradient(
+    var(--roxo) 0% 55%,
+    var(--marrom) 55% 80%,
+    var(--verde) 80% 95%,
+    var(--vermelho) 95% 100%
+  );
+  position: relative;
+  border: 3px solid var(--preto);
+}
+
+.donut::after{
+  content: "";
+  position: absolute;
+  width: 92px; height: 92px;
+  border-radius: 50%;
+  background: var(--cinza);
+  border: 3px solid var(--preto);
+  top: 46px; left: 46px;
+}
+
+.donut-legend{ text-align: left; font-family: var(--font-body); font-size: 0.85rem; max-width: 220px; margin: 0 auto; }
+.donut-legend div{ margin-bottom: 4px; }
+
+.legend-dot{
+  display: inline-block;
+  width: 11px; height: 11px;
+  border-radius: 50%;
+  border: 1.5px solid var(--preto);
+  margin-right: 6px;
+}
+
+.progress-bar-wrap{ display: flex; align-items: center; gap: 16px; justify-content: center; margin-top: 22px; }
+
+.progress-bar{
+  width: 170px; height: 30px;
+  border-radius: 20px;
+  overflow: hidden;
+  display: flex;
+  background: var(--vermelho);
+  border: 3px solid var(--preto);
+}
+
+.progress-fill{ background: var(--roxo); height: 100%; }
+.progress-bar-wrap strong{ font-family: var(--font-title); font-size: 1.3rem; }
+.meta-note{ font-family: var(--font-body); font-size: 0.8rem; margin-top: 8px; }
+
+.stars-input{ display: flex; flex-direction: row-reverse; justify-content: center; gap: 6px; font-size: 2.2rem; margin: 6px 0 16px 0; }
+.stars-input input{ display: none; }
+.stars-input label{ color: #b9b3d4; cursor: pointer; transition: color 0.1s ease; }
+
+.stars-input input:checked ~ label,
+.stars-input label:hover,
+.stars-input label:hover ~ label{ color: var(--laranja); }
+
+.mini-input{
+  width: 100%;
+  padding: 10px 18px;
+  border-radius: 30px;
+  border: 2px solid var(--preto);
+  font-family: var(--font-body);
+  font-size: 0.95rem;
+  margin-bottom: 14px;
+  background: var(--branco);
+}
+
+.obrigado-msg{ font-family: var(--font-title); font-size: 1.2rem; margin-top: 10px; }
+</style>
+</head>
+<body>
+
+<!-- =====================================================================
+     PÁGINA 1 — LANDING
+===================================================================== -->
+<section id="page-landing" class="page active">
+
+  <div class="topbar">
+    <a href="#" class="btn btn-wrap-text" onclick="goTo('login'); return false;">Crie sua conta aqui!</a>
+    <div></div>
+  </div>
+
+  <h1 class="title-outline">RIBEIRObus</h1>
+
+  <p class="tagline">TRADIÇÃO QUE TE LEVA MAIS LONGE. O BRASIL INTEIRO DE FRENTE PARA O MAR.</p>
+
+  <div class="hero-img-wrap">
+    <div class="hero-img-frame">
+      <img
+        src="https://loremflickr.com/700/525/beach,woman,travel?lock=101"
+        onerror="this.onerror=null;this.src='https://picsum.photos/seed/ribeirobus-hero/700/525';"
+        alt="Cliente feliz na praia com camiseta RIBEIRObus">
+    </div>
+  </div>
+
+  <div class="center-col" style="margin-top: 18px;">
+    <a href="#" class="btn" onclick="goTo('home'); return false;">Ir para Home</a>
+  </div>
+
+  <div class="footer-social">
+    <a href="https://instagram.com" target="_blank" rel="noopener">
+      <span class="icon-circle">📷</span> @RIBEIRObus
+    </a>
+    <a href="https://wa.me/5531982542677" target="_blank" rel="noopener">
+      <span class="icon-circle">💬</span> +55 31 98254-2677
+    </a>
+  </div>
+
+</section>
+
+<!-- =====================================================================
+     PÁGINA 2 — HOME
+===================================================================== -->
+<section id="page-home" class="page">
+
+  <div class="topbar">
+    <a href="#" class="btn" onclick="goTo('landing'); return false;">Voltar</a>
+    <div></div>
+  </div>
+
+  <div class="bus-hero">
+    <img
+      src="https://loremflickr.com/1000/500/bus,road,travel?lock=202"
+      onerror="this.onerror=null;this.src='https://picsum.photos/seed/ribeirobus-onibus/1000/500';"
+      alt="Ônibus RIBEIRObus rumo a Cabo Frio">
+
+    <div class="overlay-top-left">
+      <div class="brand">RIBEIRO<span>bus</span></div>
+      <div class="slogan">CONFORTO QUE TE LEVA.</div>
+      <div class="sub">Uma viagem começa quando você embarca.</div>
+    </div>
+
+    <div class="overlay-top-right">
+      <div class="brand-small">RIBEIRO<span>bus</span></div>
+      <div class="destino-tag">CABO FRIO</div>
+    </div>
+
+    <div class="overlay-bottom">Viaje pelo Brasil. Viva o destino.</div>
+  </div>
+
+  <div class="home-buttons">
+    <a href="#" class="btn btn-wrap-text" onclick="goTo('login'); return false;">Coloque seu contato aqui!</a>
+    <a href="#" class="btn btn-wrap-text" onclick="goTo('historia'); return false;">Nossa história</a>
+    <a href="#" class="btn" onclick="goTo('destinos'); return false;">Destinos</a>
+    <a href="#" class="btn" onclick="goTo('dashboard'); return false;">Dashboard</a>
+  </div>
+
+</section>
+
+<!-- =====================================================================
+     PÁGINA 3 — LOGIN / CRIAR CONTA
+===================================================================== -->
+<section id="page-login" class="page">
+
+  <div class="topbar">
+    <a href="#" class="btn" onclick="goTo('home'); return false;">Voltar</a>
+    <span class="btn btn-static">Login</span>
+  </div>
+
+  <div id="loginFormBox">
+    <form id="loginForm" class="form-wrap">
+
+      <div class="form-row">
+        <label for="nome">Nome completo:</label>
+        <input type="text" id="nome" name="Nome completo" placeholder="Digite seu nome completo" required>
+      </div>
+
+      <div class="form-row">
+        <label for="cpf">CPF:</label>
+        <input type="text" id="cpf" name="CPF" placeholder="000.000.000-00" required>
+      </div>
+
+      <div class="form-row">
+        <label for="ddd">DDD:</label>
+        <input type="text" id="ddd" name="DDD" placeholder="Ex: 31" maxlength="3" required>
+      </div>
+
+      <div class="form-row">
+        <label for="email">Email:</label>
+        <input type="email" id="email" name="Email" placeholder="seuemail@exemplo.com" required>
+      </div>
+
+      <div class="form-row">
+        <label for="telefone">Número de telefone:</label>
+        <input type="tel" id="telefone" name="Telefone" placeholder="98254-2677" required>
+      </div>
+
+      <input type="hidden" name="_subject" value="Nova conta criada - RIBEIRObus">
+      <input type="hidden" name="_captcha" value="false">
+      <input type="hidden" name="_template" value="table">
+
+      <div class="form-submit">
+        <button type="submit" class="btn">Criar conta</button>
+      </div>
+
+    </form>
+  </div>
+
+  <div id="successMsg" class="success-box" style="display:none;">
+    <h2>Conta criada com sucesso! ✅</h2>
+    <p>Suas informações foram enviadas para a nossa equipe.</p>
+    <div style="margin-top:30px;">
+      <a href="#" class="btn" onclick="goTo('home'); return false;">Ir para Home</a>
+    </div>
+  </div>
+
+</section>
+
+<!-- =====================================================================
+     PÁGINA 4 — NOSSA HISTÓRIA
+===================================================================== -->
+<section id="page-historia" class="page">
+
+  <div class="topbar">
+    <a href="#" class="btn" onclick="goTo('home'); return false;">Voltar</a>
+    <div></div>
+  </div>
+
+  <h1 class="title-underline">Nossa história</h1>
+
+  <p class="history-text">
+    Ideia criada, a partir de um cliente há muito tempo atrás, pois as viagens de ônibus
+    eram mais baratas mas nem tão conhecidas.<br><br>
+    A nossa origem é a partir da família, uma empresa de família, sendo uma das que criou
+    esse cenário de viagens em ônibus e, com a troca de geração, queremos crescer ainda mais.
+  </p>
+
+</section>
+
+<!-- =====================================================================
+     PÁGINA 5 — DESTINOS
+===================================================================== -->
+<section id="page-destinos" class="page">
+
+  <div class="topbar">
+    <a href="#" class="btn" onclick="goTo('home'); return false;">Voltar</a>
+    <div></div>
+  </div>
+
+  <h1 class="title-underline">Destinos</h1>
+
+  <div class="destinos-grid" id="destinosGrid"></div>
+
+</section>
+
+<!-- =====================================================================
+     PÁGINA 6 — DETALHES DA VIAGEM / RESERVA
+===================================================================== -->
+<section id="page-reserva" class="page">
+
+  <div class="topbar">
+    <a href="#" class="btn" onclick="goTo('destinos'); return false;">Voltar</a>
+    <div></div>
+  </div>
+
+  <h1 class="title-underline" id="pageTitleReserva">Detalhes da Viagem</h1>
+
+  <div class="reserva-wrap">
+
+    <div class="reserva-photo">
+      <img id="destinoImg" src="" alt="Fotos do local">
+    </div>
+
+    <div class="reserva-form">
+      <form id="reservaForm">
+
+        <div class="form-row">
+          <label>Nome completo:</label>
+          <input type="text" name="nome" placeholder="Digite seu nome completo" required>
+        </div>
+
+        <div class="form-row">
+          <label>CPF:</label>
+          <input type="text" name="cpf" placeholder="000.000.000-00" required>
+        </div>
+
+        <div class="form-row">
+          <label>DDD:</label>
+          <input type="text" name="ddd" placeholder="Ex: 31" maxlength="3" required>
+        </div>
+
+        <div class="form-row">
+          <label>Email:</label>
+          <input type="email" name="email" placeholder="seuemail@exemplo.com" required>
+        </div>
+
+        <div class="form-row">
+          <label>Número de telefone:</label>
+          <input type="tel" name="telefone" placeholder="98254-2677" required>
+        </div>
+
+        <div class="form-row">
+          <label>Quantas pessoas irão:</label>
+          <input type="number" id="qtdPessoas" name="qtdPessoas" placeholder="Ex: 2" min="1" value="1" required>
+        </div>
+
+        <div class="form-row">
+          <label>Local de partida:</label>
+          <input type="text" name="localPartida" placeholder="Digite a cidade de partida" required>
+        </div>
+
+        <div class="form-row">
+          <label>Tipo do ônibus:</label>
+          <select id="tipoOnibus" name="tipoOnibus">
+            <option value="1">Executivo</option>
+            <option value="1.3">Plus</option>
+            <option value="1.6">Premium</option>
+          </select>
+        </div>
+
+        <div class="form-row">
+          <label>Extras:</label>
+          <div class="extras-list">
+            <label><input type="checkbox" class="extraCheck" value="30"> Barmen (+R$ 30/pessoa)</label>
+            <label><input type="checkbox" class="extraCheck" value="25"> Garçom (+R$ 25/pessoa)</label>
+            <label><input type="checkbox" class="extraCheck" value="40"> Recepção no hotel (+R$ 40/pessoa)</label>
+            <label><input type="checkbox" class="extraCheck" value="15"> Diversidade para PCDs (+R$ 15/pessoa)</label>
+          </div>
+        </div>
+
+        <div class="total-line">Total: R$ <span id="totalValor">0,00</span></div>
+
+      </form>
+    </div>
+
+  </div>
+
+  <div class="pagamento-box">
+    <div class="label-title">Formas de pagamento:</div>
+    <p style="margin: 8px 0 0 0;">Pix, Cartão de crédito (até 12x) ou Boleto bancário.</p>
+  </div>
+
+  <div class="reserve-btn-wrap">
+    <button id="reservarBtn" class="btn">Reserve já!</button>
+  </div>
+
+  <div id="reservaSucesso" class="success-box" style="display:none;">
+    <h2>Reserva confirmada! 🎉</h2>
+    <p id="resumoReserva"></p>
+    <div style="margin-top:30px;">
+      <a href="#" class="btn" onclick="goTo('home'); return false;">Ir para Home</a>
+    </div>
+  </div>
+
+</section>
+
+<!-- =====================================================================
+     PÁGINA 7 — DASHBOARD
+===================================================================== -->
+<section id="page-dashboard" class="page">
+
+  <div class="topbar">
+    <a href="#" class="btn" onclick="goTo('home'); return false;">Voltar</a>
+    <span class="btn btn-static">Dashboard</span>
+  </div>
+
+  <div class="dash-grid">
+
+    <div class="dash-card">
+      <h3>Avaliação de outros clientes:</h3>
+
+      <div class="review">
+        <div class="stars">★★★★★</div>
+        <strong>Marina S.</strong> — Viagem para Cabo Frio impecável, ônibus muito confortável e motorista super atencioso!
+      </div>
+
+      <div class="review">
+        <div class="stars">★★★★★</div>
+        <strong>Lucas P.</strong> — Já é a terceira vez que viajo com a RIBEIRObus, sempre pontual e organizado.
+      </div>
+
+      <div class="review">
+        <div class="stars">★★★★☆</div>
+        <strong>Fernanda A.</strong> — Fomos para Porto Seguro, tudo tranquilo, só achei o embarque um pouco demorado.
+      </div>
+
+      <div class="review">
+        <div class="stars">★★★★★</div>
+        <strong>Rodrigo M.</strong> — Contratamos o pacote Premium com recepção no hotel, valeu cada centavo!
+      </div>
+    </div>
+
+    <div class="dash-card">
+      <h3>Informações de vendas:</h3>
+
+      <div class="donut"></div>
+
+      <div class="donut-legend">
+        <div><span class="legend-dot" style="background:var(--roxo);"></span>Vendas — 55%</div>
+        <div><span class="legend-dot" style="background:var(--marrom);"></span>Finanças — 25%</div>
+        <div><span class="legend-dot" style="background:var(--verde);"></span>Marketing — 15%</div>
+        <div><span class="legend-dot" style="background:var(--vermelho);"></span>RH — 5%</div>
+      </div>
+
+      <div class="progress-bar-wrap">
+        <div class="progress-bar">
+          <div class="progress-fill" style="width:67%;"></div>
+        </div>
+        <strong>67%</strong>
+      </div>
+      <p class="meta-note">Meta de vendas do trimestre atingida</p>
+    </div>
+
+    <div class="dash-card">
+      <h3>Nos avalie aqui:</h3>
+
+      <form id="avaliacaoForm">
+        <div class="stars-input">
+          <input type="radio" id="star5" name="rating" value="5"><label for="star5">★</label>
+          <input type="radio" id="star4" name="rating" value="4"><label for="star4">★</label>
+          <input type="radio" id="star3" name="rating" value="3"><label for="star3">★</label>
+          <input type="radio" id="star2" name="rating" value="2"><label for="star2">★</label>
+          <input type="radio" id="star1" name="rating" value="1"><label for="star1">★</label>
+        </div>
+
+        <input type="text" class="mini-input" name="comentario" placeholder="Conte como foi sua viagem...">
+
+        <div class="form-submit">
+          <button type="submit" class="btn btn-small">Enviar avaliação</button>
+        </div>
+      </form>
+
+      <p id="obrigadoMsg" class="obrigado-msg" style="display:none;">
+        Obrigado pela sua avaliação! 🙏
+      </p>
+    </div>
+
+  </div>
+
+</section>
+
+<script>
+/* =========================================================================
+   NAVEGAÇÃO ENTRE PÁGINAS (SPA — tudo em um único arquivo)
+========================================================================= */
+function goTo(pageName){
+  document.querySelectorAll('.page').forEach(function(p){ p.classList.remove('active'); });
+  var target = document.getElementById('page-' + pageName);
+  if(target){ target.classList.add('active'); }
+  window.scrollTo(0, 0);
+}
+
+/* =========================================================================
+   DESTINOS — dados e geração dos cartões
+========================================================================= */
+var destinos = [
+  { nome: "Tibau do Sul, RN", preco: 250, keywords: "dunes,beach,brazil", lock: 301 },
+  { nome: "Cabo Frio, RJ", preco: 150, keywords: "beach,brazil,coast", lock: 302 },
+  { nome: "Maraú, BA", preco: 300, keywords: "bahia,beach,palmtree", lock: 303 },
+  { nome: "Porto Seguro, BA", preco: 280, keywords: "beach,bahia,sea", lock: 304 },
+  { nome: "Macéio, AL", preco: 320, keywords: "beach,alagoas,ocean", lock: 305 },
+  { nome: "Fernando de Noronha, PE", preco: 600, keywords: "island,beach,paradise", lock: 306 },
+  { nome: "Tambaú, JP", preco: 260, keywords: "beach,joaopessoa,coast", lock: 307 },
+  { nome: "Morro de São Paulo, BA", preco: 290, keywords: "beach,bahia,island", lock: 308 },
+  { nome: "Florianópolis, SC", preco: 220, keywords: "beach,island,florianopolis", lock: 309 }
+];
+
+var destinoAtual = null;
+
+(function montarDestinos(){
+  var grid = document.getElementById('destinosGrid');
+  destinos.forEach(function(d){
+    var card = document.createElement('a');
+    card.href = '#';
+    card.className = 'destino-card';
+    card.innerHTML = '<div class="nome">' + d.nome + '</div>' +
+                      '<div class="clique">Clique para detalhes!</div>';
+    card.onclick = function(e){
+      e.preventDefault();
+      abrirReserva(d);
+    };
+    grid.appendChild(card);
+  });
+})();
+
+function abrirReserva(destino){
+  destinoAtual = destino;
+
+  // reset visual da página de reserva (caso já tenha sido usada antes)
+  document.querySelector('#page-reserva .reserva-wrap').style.display = 'flex';
+  document.querySelector('#page-reserva .pagamento-box').style.display = 'block';
+  document.getElementById('reservarBtn').style.display = 'inline-block';
+  document.getElementById('reservaSucesso').style.display = 'none';
+  document.getElementById('reservaForm').reset();
+
+  document.getElementById('pageTitleReserva').textContent = 'Detalhes da viagem - ' + destino.nome;
+
+  var img = document.getElementById('destinoImg');
+  img.src = 'https://loremflickr.com/600/600/' + destino.keywords + '?lock=' + destino.lock;
+  img.onerror = function(){
+    img.onerror = null;
+    img.src = 'https://picsum.photos/seed/' + encodeURIComponent(destino.nome) + '/600/600';
+  };
+  img.alt = 'Fotos de ' + destino.nome;
+
+  calcularTotal();
+  goTo('reserva');
+}
+
+/* =========================================================================
+   RESERVA — cálculo de total em tempo real
+========================================================================= */
+function calcularTotal(){
+  if(!destinoAtual) return 0;
+
+  var qtd = parseInt(document.getElementById('qtdPessoas').value) || 1;
+  var multiplicador = parseFloat(document.getElementById('tipoOnibus').value);
+
+  var extras = 0;
+  document.querySelectorAll('.extraCheck:checked').forEach(function(c){
+    extras += parseFloat(c.value);
+  });
+
+  var total = (destinoAtual.preco * multiplicador + extras) * qtd;
+  document.getElementById('totalValor').textContent = total.toFixed(2).replace('.', ',');
+  return total;
+}
+
+document.getElementById('qtdPessoas').addEventListener('input', calcularTotal);
+document.getElementById('tipoOnibus').addEventListener('change', calcularTotal);
+document.querySelectorAll('.extraCheck').forEach(function(c){
+  c.addEventListener('change', calcularTotal);
+});
+
+document.getElementById('reservarBtn').addEventListener('click', function(){
+  var form = document.getElementById('reservaForm');
+  if(!form.checkValidity()){
+    form.reportValidity();
+    return;
+  }
+  var total = calcularTotal();
+  document.getElementById('resumoReserva').textContent =
+    'Sua viagem para ' + destinoAtual.nome + ' foi reservada com sucesso! Valor total: R$ ' +
+    total.toFixed(2).replace('.', ',');
+
+  document.querySelector('#page-reserva .reserva-wrap').style.display = 'none';
+  document.querySelector('#page-reserva .pagamento-box').style.display = 'none';
+  document.getElementById('reservarBtn').style.display = 'none';
+  document.getElementById('reservaSucesso').style.display = 'block';
+});
+
+/* =========================================================================
+   LOGIN — criação de conta e envio de e-mail (FormSubmit, sem backend)
+========================================================================= */
+document.getElementById('loginForm').addEventListener('submit', function(e){
+  e.preventDefault();
+
+  var form = e.target;
+  var data = new FormData(form);
+
+  fetch('https://formsubmit.co/ajax/befariaribeiro@gmail.com', {
+    method: 'POST',
+    headers: { 'Accept': 'application/json' },
+    body: data
+  }).catch(function(err){
+    console.log('Falha ao enviar (ok em ambiente de teste local):', err);
+  });
+
+  document.getElementById('loginFormBox').style.display = 'none';
+  document.getElementById('successMsg').style.display = 'block';
+});
+
+/* =========================================================================
+   DASHBOARD — avaliação do usuário
+========================================================================= */
+document.getElementById('avaliacaoForm').addEventListener('submit', function(e){
+  e.preventDefault();
+  e.target.style.display = 'none';
+  document.getElementById('obrigadoMsg').style.display = 'block';
+});
+</script>
+
+</body>
+</html>
